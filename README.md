@@ -1,1 +1,1 @@
-PyTorch Deep Learning Skeletron
+Pytorch Deep Learning Template
