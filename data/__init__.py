@@ -2,7 +2,7 @@ import numpy as np
 from .MyDataset import MyDataset
 from torch.utils.data import DataLoader, random_split
 from logger import logging
-
+from torchvision.datasets.folder import ImageFolder
 
 def get_dataloaders(
         train_dir,
@@ -15,8 +15,8 @@ def get_dataloaders(
     This function returns the train, val and test dataloaders.
     """
     # create the datasets
-    train_ds = MyDataset.from_dir(train_dir, transform=train_transform)
-    val_ds = MyDataset.from_dir(var_dir, transform=val_transform)
+    train_ds = ImageFolder(root=train_dir, transform=train_transform)
+    val_ds = ImageFolder(root=var_dir, transform=val_transform)
     # now we want to split the val_ds in validation and test
     lengths = np.array(split) * len(val_ds)
     lengths = lengths.astype(int)
