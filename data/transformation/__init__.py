@@ -1,7 +1,6 @@
-import torchvision.transforms as T
-import PIL
-from imgaug import augmenters as iaa
 import numpy as np
+import torchvision.transforms as T
+from imgaug import augmenters as iaa
 
 
 class ImgAugTransform:
@@ -32,6 +31,7 @@ class ImgAugTransform:
         img = np.array(img)
         img = self.aug.augment_image(img)
         return img
+
 
 val_transform = T.Compose([T.Resize((224, 224)),
                            T.ToTensor()])
