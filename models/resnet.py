@@ -5,7 +5,7 @@ from functools import partial
 
 def resnet_tinetuning(model, classes):
     """
-    This function prepare resnet to be finetuned by:
+    This function prepares resnet to be finetuned by:
     1) freeze the model weights
     2) cut-off the last layer and replace with a new one with the correct classes number
     """
