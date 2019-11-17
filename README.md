@@ -122,6 +122,6 @@ We also created different utilities function to plot booth dataset and dataloade
 As you can see data-augmentation is correctly applied on the train set
 
 ## Conclusions
-I hope you found some useful informations and hopefully you will start to organize your next project better.
+I hope you found some useful informations and hopefully you will start to organize your next project better. Let me know if you have some ideas/suggestion to improve it.
 
 Thank you for reading
