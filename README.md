@@ -59,14 +59,22 @@ One good idea is to store all the paths at an interesting location, e.g. the dat
 
 If we have a look at `Project.py` we can see how we defined the `data_dir` and the `checkpoint_dir` once for all. We are using the 'new' [Path](https://docs.python.org/3/library/pathlib.html) APIs that supports different OS out of the box, and also make it easier to join and concatenate paths. 
 
-![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/Project.png)
+![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/Project.png) 
+
+For example, if we want to know the data location we can :
+
+```python3
+from Project import project
+print(projct.data_dir) # /foo/baa/.../dataset
+```
 
 ## Data
-A wise man once said *everything starts with the data*. In the `data` package you can define your Dataset, as always by subclassing `torch.data.utils.Dataset`. In our example, we directly used `ImageDataset` from `torchvision` but we included a skeleton in `/data/MyDataset`
+In the `data` package you can define your own Dataset, as always by subclassing `torch.data.utils.Dataset`, exposing transformations and utilities to work with your data. 
+In our example, we directly used `ImageDataset` from `torchvision` but we included a skeleton for a custom `Dataset` in `/data/MyDataset`
 
 ### Transformation
-You usually have to do some preprocessing on the data, e.g. resize the images and apply data augmentation. All your transformation should go inside `.data.trasformation`
-
+You usually have to do some preprocessing on the data, e.g. resize the images and apply data augmentation. All your transformation should go inside `.data.trasformation`. In our template we included a wrapper for 
+[imgaug](https://imgaug.readthedocs.io/en/latest/)
 
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/transformation.png)
 
