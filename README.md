@@ -1,6 +1,6 @@
 
 # Pytorch Deep Learning Template
-### A clean and simple template to kick start your project
+### A clean and simple template to kick start your next dl project 🚀🚀
 *Francesco Saverio Zuppichini*
 
 This template aims to make it easier for you to start a new deep learning computer vision project with PyTorch. The main features are:

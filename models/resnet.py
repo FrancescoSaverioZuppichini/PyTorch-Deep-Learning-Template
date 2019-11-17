@@ -15,4 +15,4 @@ def resnet_finetune(model, classes):
     return model
 
 # replace the resnet18 function
-resnet18 = partial(resnet_tinetune, resnet18(pretrained=True))
+resnet18 = partial(resnet_finetune, resnet18(pretrained=True))
