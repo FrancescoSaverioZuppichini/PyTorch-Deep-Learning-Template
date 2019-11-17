@@ -1,6 +1,5 @@
 from comet_ml import Experiment
 import torch.optim as optim
-import time
 from torchsummary import summary
 from Project import project
 from data import get_dataloaders
@@ -11,12 +10,14 @@ from poutyne.framework import Model
 from poutyne.framework.callbacks import ReduceLROnPlateau, ModelCheckpoint, EarlyStopping
 from callbacks import CometCallback
 from logger import logging
+
 # our hyperparameters
 params = {
     'lr': 0.001,
     'batch_size': 32,
     'model': 'resnet18-finetune'
 }
+logging.info(f'Using device={device} 🚀')
 # everything starts with the data
 train_dl, val_dl, test_dl = get_dataloaders(
     project.data_dir / "train",
@@ -25,7 +26,6 @@ train_dl, val_dl, test_dl = get_dataloaders(
     train_transform=train_transform,
     batch_size=params['batch_size'],
 )
-logging.info(f'Using device={device}')
 # is always good practice to visualise some of the train and val images to be sure data-aug
 # is applied properly
 show_dl(train_dl)
