@@ -12,6 +12,13 @@ In this article, we present you a deep learning template based on Pytorch. This 
 - auto-saving the best model
 - experiment tracking with [comet](https://www.comet.ml/)
 - logging using python [logging](https://docs.python.org/3/library/logging.html) module
+- a playground notebook to quick test/play around
+## Installation
+Clone the repo and go inside it. Then, run:
+
+```
+pip install -r requirements.txt
+```
 
 ### Motivation
 Let's face it, usually data scientists are not software engineers and they usually end up with spaghetti code, most of the time on a big unusable Jupiter-notebook. With this repo, you have proposed a clean example of how your code should be split and modularized to make scalability and sharability possible. In this example, we will try to classify Darth Vader and Luke Skywalker. We have 100 images per class gathered using google images. The dataset is [here](https://drive.google.com/open?id=1LyHJxUVjOgDIgGJL4MnDhA10xjejWuw7). You just have to exact it in this folder and run main.py. We are fine-tuning resnet18 and it should be able to reach > 90% accuracy in 5/10 epochs.
@@ -96,7 +103,6 @@ You may need to create custom callbacks, with [poutyne](https://pypi.org/project
 We are using [comet](https://www.comet.ml/) to automatically track our models' results. This is what comet's board looks like after a few models run.
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/comet.jpg?raw=true)
 Running `main.py` produces the following output:
-
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/output.jpg?raw=true)
 ## Utils
 We also created different utilities function to plot booth dataset and dataloader. They are in `utils.py`. For example, calling `show_dl` on our train and val dataset produces the following outputs.
