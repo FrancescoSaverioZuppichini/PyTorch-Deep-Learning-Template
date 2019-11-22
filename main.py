@@ -31,7 +31,7 @@ train_dl, val_dl, test_dl = get_dataloaders(
 show_dl(train_dl)
 show_dl(test_dl)
 # define our comet experiment
-experiment = Experiment(api_key="8THqoAxomFyzBgzkStlY95MOf",
+experiment = Experiment(api_key="YOU_KEY",
                         project_name="dl-pytorch-template", workspace="francescosaveriozuppichini")
 experiment.log_parameters(params)
 # create our special resnet18

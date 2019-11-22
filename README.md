@@ -11,6 +11,8 @@ In this article, we present you a deep learning template based on Pytorch. This 
 - reduce the learning rate on a plateau
 - auto-saving the best model
 - experiment tracking with [comet](https://www.comet.ml/)
+- logging using python [logging](https://docs.python.org/3/library/logging.html) module
+
 ### Motivation
 Let's face it, usually data scientists are not software engineers and they usually end up with spaghetti code, most of the time on a big unusable Jupiter-notebook. With this repo, you have proposed a clean example of how your code should be split and modularized to make scalability and sharability possible. In this example, we will try to classify Darth Vader and Luke Skywalker. We have 100 images per class gathered using google images. The dataset is [here](https://drive.google.com/open?id=1LyHJxUVjOgDIgGJL4MnDhA10xjejWuw7). You just have to exact it in this folder and run main.py. We are fine-tuning resnet18 and it should be able to reach > 90% accuracy in 5/10 epochs.
 ## Structure
@@ -64,8 +66,20 @@ You usually have to do some preprocessing on the data, e.g. resize the images an
 ### Dataloaders
 As you know, you have to create a `Dataloader` to feed your data into the model. In the `data.__init__.py` file we expose a very simple function `get_dataloaders` to automatically configure the *train, val and test* data loaders using few parameters
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/data.png)
+## Losses
+Sometimes you may need to define your custom losses, you can include them in the `./losses` package. For example
+![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/losses.png)
+## Logging 
+We included python [logging](https://docs.python.org/3/library/logging.html) module. You can import and use it by:
+
+```python
+from logger import logger
+logger.info('print() is for noobs')
+```
+
 ## Models
 All your models go inside `models`, in our case, we have a very basic cnn and we override the `resnet18` function to provide a frozen model to finetune.
+
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/resnet.png?raw=true)
 ## Train/Evaluation
 In our case we kept things simple, all the training and evaluation logic is inside `.main.py` where we used [poutyne](https://pypi.org/project/Poutyne/) as the main library. We already defined a useful list of callbacks:
@@ -74,10 +88,15 @@ In our case we kept things simple, all the training and evaluation logic is insi
 - early stopping
 Usually, this is all you need!
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/main.png?raw=true)
+### Callbacks 
+You may need to create custom callbacks, with [poutyne](https://pypi.org/project/Poutyne/) is very easy since it support Keras-like API. You custom callbacks should go inside `./callbacks`. For example, we have created one to update Comet every epoch.
+![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/CometCallback.png?raw=true)
+
 ### Track your experiment
 We are using [comet](https://www.comet.ml/) to automatically track our models' results. This is what comet's board looks like after a few models run.
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/comet.jpg?raw=true)
 Running `main.py` produces the following output:
+
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/develop/images/output.jpg?raw=true)
 ## Utils
 We also created different utilities function to plot booth dataset and dataloader. They are in `utils.py`. For example, calling `show_dl` on our train and val dataset produces the following outputs.
