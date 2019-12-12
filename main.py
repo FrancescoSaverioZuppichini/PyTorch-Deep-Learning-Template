@@ -1,7 +1,7 @@
 from comet_ml import Experiment
 import torch.optim as optim
 from torchsummary import summary
-from Project import project
+from Project import Project
 from data import get_dataloaders
 from data.transformation import train_transform, val_transform
 from models import MyCNN, resnet18
@@ -11,6 +11,7 @@ from poutyne.framework.callbacks import ReduceLROnPlateau, ModelCheckpoint, Earl
 from callbacks import CometCallback
 from logger import logging
 
+project = Project()
 # our hyperparameters
 params = {
     'lr': 0.001,

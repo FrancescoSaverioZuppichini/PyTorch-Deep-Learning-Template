@@ -17,5 +17,3 @@ class Project:
         self.checkpoint_dir.mkdir(exist_ok=True)
 
 
-# expose a singleton
-project = Project()
