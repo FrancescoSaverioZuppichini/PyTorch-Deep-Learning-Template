@@ -116,3 +116,8 @@ I hope you found some useful information and hopefully it this template will hel
 Let me know if you have some ideas/suggestions to improve it.
 
 Thank you for reading
+
+## TODO 
+- [ ] one example for [lightning](https://github.com/williamFalcon/pytorch-lightning)
+- [ ] one example with [fastai](https://www.fast.ai/)
+- [ ] show how to setup anaconda 
