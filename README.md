@@ -60,7 +60,8 @@ If we have a look at `Project.py` we can see how we defined the `data_dir` and t
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/Project.png)
 For example, if we want to know the data location we can :
 ```python3
-from Project import project
+from Project import Project
+project = Project() 
 print(projct.data_dir) # /foo/baa/…/dataset
 ```
 ## Data
