@@ -15,5 +15,3 @@ class Project:
         # create the directory if they does not exist
         self.data_dir.mkdir(exist_ok=True)
         self.checkpoint_dir.mkdir(exist_ok=True)
-
-
