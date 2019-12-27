@@ -22,8 +22,7 @@ params = {
 logging.info(f'Using device={device} 🚀')
 # everything starts with the data
 train_dl, val_dl, test_dl = get_dataloaders(
-    project.data_dir / "train",
-    project.data_dir / "val",
+    project.data_dir,
     val_transform=val_transform,
     train_transform=train_transform,
     batch_size=params['batch_size'],
