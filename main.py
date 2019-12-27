@@ -1,5 +1,6 @@
-from comet_ml import Experiment
+import time
 import torch.optim as optim
+from comet_ml import Experiment
 from torchsummary import summary
 from Project import Project
 from data import get_dataloaders
