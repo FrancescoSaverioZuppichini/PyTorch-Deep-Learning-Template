@@ -1,11 +1,15 @@
 import torch
-from torchbearer import metrics
+import torchbearer
+from torchbearer import callbacks
 
-@metrics.default_for_key('acc')
-@metrics.running_mean
-@metrics.std
-@metrics.mean
-@metrics.lambda_metric('acc', on_epoch=False)
-def categorical_accuracy(y_pred, y_true):
-   _, y_pred = torch.max(y_pred, 1)
-   return (y_pred == y_true).float()
+# we can use the callbacks APIS
+@callbacks.add_to_loss
+def l1_norm(state):
+   loss = 0
+   for param in state[torchbearer.MODEL].parameters():
+      loss += torch.sum(torch.abs(param))
+   return loss
+
+# or just define a normal PyTorch loss
+def my_mse(y_pred, y_true):
+   return torch.mean((y_pred - y_true) ** 2)

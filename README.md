@@ -6,7 +6,7 @@ In this article, we present you a deep learning template based on Pytorch. This 
 
 - modularity: we split each logic piece into a different python submodule
 - data-augmentation: we included [imgaug](https://imgaug.readthedocs.io/en/latest/)
-- ready to go: by using [poutyne](https://pypi.org/project/Poutyne/) a Keras-like framework you don't have to write any train loop.
+- ready to go: by using [torchbearer](https://pypi.org/project/Poutyne/) a Keras-like framework you don't have to write any train loop.
 - [torchsummary](https://github.com/sksq96/pytorch-summary) to show a summary of your models
 - reduce the learning rate on a plateau
 - auto-saving the best model
@@ -35,6 +35,7 @@ The template is inside `./template`.
 │ └── val
 ├── logger.py // were we define our logger
 ├── losses // custom losses
+├── metrics // custom metrics
 ├── main.py
 ├── models // here we create our models
 │ ├── MyCNN.py
@@ -77,6 +78,10 @@ As you know, you have to create a `Dataloader` to feed your data into the model.
 ## Losses
 Sometimes you may need to define your custom losses, you can include them in the `./losses` package. For example
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/losses.png)
+## Losses
+Sometimes you may need to define your custom metrics, you can use [torchbearer APIS](https://torchbearer.readthedocs.io/en/latest/notes/metrics.html).
+ For example
+![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/metrics.png)
 ## Logging 
 We included python [logging](https://docs.python.org/3/library/logging.html) module. You can import and use it by:
 
