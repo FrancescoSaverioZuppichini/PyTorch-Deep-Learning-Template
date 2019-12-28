@@ -1,6 +1,11 @@
 import torch
-# define custom losses
+from torchbearer import metrics
 
-def my_loss(output, target):
-    loss = torch.mean((output - target) ** 2)
-    return loss
+@metrics.default_for_key('acc')
+@metrics.running_mean
+@metrics.std
+@metrics.mean
+@metrics.lambda_metric('acc', on_epoch=False)
+def categorical_accuracy(y_pred, y_true):
+   _, y_pred = torch.max(y_pred, 1)
+   return (y_pred == y_true).float()

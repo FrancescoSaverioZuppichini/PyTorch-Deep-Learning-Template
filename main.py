@@ -1,4 +1,5 @@
 import time
+import json
 from comet_ml import Experiment
 import torchbearer
 import torch.optim as optim
@@ -21,8 +22,10 @@ if __name__ == '__main__':
         'lr': 0.001,
         'batch_size': 64,
         'epochs': 1,
-        'model': 'resnet18-finetune'
+        'model': 'resnet18-finetune',
+        'id': time.time()
     }
+
     logging.info(f'Using device={device} 🚀')
     # everything starts with the data
     train_dl, val_dl, test_dl = get_dataloaders(
@@ -36,7 +39,9 @@ if __name__ == '__main__':
     # show_dl(train_dl)
     # show_dl(test_dl)
     # define our comet experiment
-    experiment = Experiment(api_key="YOU_KEY",
+    with open('secrets.json') as f: 
+        secrets = json.load(f)
+    experiment = Experiment(api_key=secrets['COMET_API_KEY'],
                             project_name="dl-pytorch-template", workspace="francescosaveriozuppichini")
     experiment.log_parameters(params)
     # create our special resnet18
@@ -53,12 +58,12 @@ if __name__ == '__main__':
                       ReduceLROnPlateau(monitor='val_loss',
                                         factor=0.1, patience=5),
                       EarlyStopping(monitor='val_acc', patience=5, mode='max'),
-                      CSVLogger('history.csv'),
-                      ModelCheckpoint('best.pt', monitor='val_acc', mode='max')
+                      CSVLogger(str(project.checkpoint_dir / 'history.csv')),
+                      ModelCheckpoint(str(project.checkpoint_dir / f'{id}-best.pt'), monitor='val_acc', mode='max')
     ]).to(device)
     trial.with_generators(train_generator=train_dl,
                           val_generator=val_dl, test_generator=test_dl)
-    # history = trial.run(params['epochs'], verbose=1)
+    history = trial.run(params['epochs'], verbose=1)
     preds = trial.evaluate(data_key=torchbearer.TEST_DATA)
     logging.info(f'test preds=({preds})')
     # experiment.log_metric('test_acc', test_acc)

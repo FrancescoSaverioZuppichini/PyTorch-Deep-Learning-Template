@@ -11,7 +11,7 @@ def show(img):
     npimg = img.numpy()
     plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
     plt.show()
-    
+
 
 def show_dataset(dataset, n=6):
     imgs = [dataset[i][0] for i in range(n)]
