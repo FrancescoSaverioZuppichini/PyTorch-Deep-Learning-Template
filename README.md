@@ -80,7 +80,7 @@ As you know, you have to create a `Dataloader` to feed your data into the model.
 ## Losses
 Sometimes you may need to define your custom losses, you can include them in the `./losses` package. For example
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/losses.png)
-## Losses
+## Metrics
 Sometimes you may need to define your custom metrics, you can use [torchbearer APIS](https://torchbearer.readthedocs.io/en/latest/notes/metrics.html).
  For example
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/develop/images/metrics.png)
