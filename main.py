@@ -1,5 +1,4 @@
 import time
-import json
 from comet_ml import Experiment
 import torchbearer
 import torch.optim as optim
@@ -39,9 +38,7 @@ if __name__ == '__main__':
     # show_dl(train_dl)
     # show_dl(test_dl)
     # define our comet experiment
-    with open('secrets.json') as f: 
-        secrets = json.load(f)
-    experiment = Experiment(api_key=secrets['COMET_API_KEY'],
+    experiment = Experiment(api_key='8THqoAxomFyzBgzkStlY95MOf',
                             project_name="dl-pytorch-template", workspace="francescosaveriozuppichini")
     experiment.log_parameters(params)
     # create our special resnet18

@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 epoch,running_acc,running_loss,acc,loss,val_acc,val_loss
 0,0.546875,0.7107245922088623,0.5546875,0.6799900531768799,0.6875,0.6393929719924927
+=======
+epoch,running_acc,running_loss,acc,loss,val_acc,val_loss
+0,0.328125,0.9530899524688721,0.5038759708404541,0.6049559116363525,1.0,0.18970759212970734
+>>>>>>> develop
