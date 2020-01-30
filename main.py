@@ -54,16 +54,17 @@ if __name__ == '__main__':
     # create our Trial object to train and evaluate the model
     trial = Trial(cnn, optimizer, loss, metrics=['acc', 'loss'],
                   callbacks=[
-                      CometCallback(experiment),
-                      ReduceLROnPlateau(monitor='val_loss',
-                                        factor=0.1, patience=5),
-                      EarlyStopping(monitor='val_acc', patience=5, mode='max'),
-                      CSVLogger(str(project.checkpoint_dir / 'history.csv')),
-                      ModelCheckpoint(str(project.checkpoint_dir / f'{id}-best.pt'), monitor='val_acc', mode='max')
+                    #   CometCallback(experiment),
+                    #   ReduceLROnPlateau(monitor='val_loss',
+                    #                     factor=0.1, patience=5),
+                    #   EarlyStopping(monitor='val_acc', patience=5, mode='max'),
+                    #   CSVLogger(str(project.checkpoint_dir / 'history.csv')),
+                    #   ModelCheckpoint(str(project.checkpoint_dir / f'{params["id"]}-best.pt'), monitor='val_acc', mode='max')
     ]).to(device)
     trial.with_generators(train_generator=train_dl,
                           val_generator=val_dl, test_generator=test_dl)
-    history = trial.run(params['epochs'], verbose=1)
+    history = trial.run(epochs=params['epochs'], verbose=1)
+    logging.info(history)
     preds = trial.evaluate(data_key=torchbearer.TEST_DATA)
     logging.info(f'test preds=({preds})')
     # experiment.log_metric('test_acc', test_acc)
