@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # create our Trial object to train and evaluate the model
     trial = Trial(cnn, optimizer, loss, metrics=['acc', 'loss'],
                   callbacks=[
-                      CometCallback(experiment),
+                    #   CometCallback(experiment),
                       ReduceLROnPlateau(monitor='val_loss',
                                         factor=0.1, patience=5),
                       EarlyStopping(monitor='val_acc', patience=5, mode='max'),
