@@ -32,6 +32,7 @@ if __name__ == '__main__':
         val_transform=val_transform,
         train_transform=train_transform,
         batch_size=params['batch_size'],
+        num_workers=4,
     )
     # is always good practice to visualise some of the train and val images to be sure data-aug
     # is applied properly
@@ -42,7 +43,7 @@ if __name__ == '__main__':
                             project_name="dl-pytorch-template", workspace="francescosaveriozuppichini")
     experiment.log_parameters(params)
     # create our special resnet18
-    cnn = resnet18(2).to(device)
+    cnn = resnet18(n_classes=2).to(device)
     loss = nn.CrossEntropyLoss()
     # print the model summary to show useful information
     logging.info(summary(cnn, (3, 224, 244)))
@@ -51,12 +52,12 @@ if __name__ == '__main__':
     # create our Trial object to train and evaluate the model
     trial = Trial(cnn, optimizer, loss, metrics=['acc', 'loss'],
                   callbacks=[
-                    #   CometCallback(experiment),
-                    #   ReduceLROnPlateau(monitor='val_loss',
-                    #                     factor=0.1, patience=5),
-                    #   EarlyStopping(monitor='val_acc', patience=5, mode='max'),
-                    #   CSVLogger(str(project.checkpoint_dir / 'history.csv')),
-                    #   ModelCheckpoint(str(project.checkpoint_dir / f'{params["id"]}-best.pt'), monitor='val_acc', mode='max')
+                      CometCallback(experiment),
+                      ReduceLROnPlateau(monitor='val_loss',
+                                        factor=0.1, patience=5),
+                      EarlyStopping(monitor='val_acc', patience=5, mode='max'),
+                      CSVLogger(str(project.checkpoint_dir / 'history.csv')),
+                      ModelCheckpoint(str(project.checkpoint_dir / f'{params["id"]}-best.pt'), monitor='val_acc', mode='max')
     ]).to(device)
     trial.with_generators(train_generator=train_dl,
                           val_generator=val_dl, test_generator=test_dl)

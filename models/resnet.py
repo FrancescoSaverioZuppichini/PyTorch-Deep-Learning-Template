@@ -3,7 +3,7 @@ from torchvision.models import resnet18
 from functools import partial
 
 
-def resnet_finetune(model, classes):
+def resnet_finetune(model, n_classes):
     """
     This function prepares resnet to be finetuned by:
     1) freeze the model weights
@@ -11,7 +11,7 @@ def resnet_finetune(model, classes):
     """
     for param in model.parameters():
         param.requires_grad = False
-    model.fc = nn.Linear(512, classes)
+    model.fc = nn.Linear(512, n_classes)
     return model
 
 # replace the resnet18 function
