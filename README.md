@@ -2,11 +2,13 @@
 ### A clean and simple template to kick start your next dl project 🚀🚀
 *Francesco Saverio Zuppichini*
 
-In this article, we present you a deep learning template based on Pytorch. This template aims to make it easier for you to start a new deep learning computer vision project with PyTorch. The main features are:
+**Update** *Switched from [poutyne](https://github.com/GRAAL-Research/poutyne) to [torchbearer](https://github.com/pytorchbearer/torchbearer). The old template can be found [here](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Template/tree/poutyne)*
+
+We present you a deep learning template based on Pytorch. This template aims to make it easier for you to start a new deep learning computer vision project with PyTorch. The main features are:
 
 - modularity: we split each logic piece into a different python submodule
 - data-augmentation: we included [imgaug](https://imgaug.readthedocs.io/en/latest/)
-- ready to go: by using [poutyne](https://pypi.org/project/Poutyne/) a Keras-like framework you don't have to write any train loop.
+- ready to go: by using [torchbearer](https://github.com/pytorchbearer/torchbearer) a Keras-like framework you don't have to write any train loop.
 - [torchsummary](https://github.com/sksq96/pytorch-summary) to show a summary of your models
 - reduce the learning rate on a plateau
 - auto-saving the best model
@@ -35,6 +37,7 @@ The template is inside `./template`.
 │ └── val
 ├── logger.py // were we define our logger
 ├── losses // custom losses
+├── metrics // custom metrics
 ├── main.py
 ├── models // here we create our models
 │ ├── MyCNN.py
