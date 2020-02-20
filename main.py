@@ -7,8 +7,8 @@ from data import get_dataloaders
 from data.transformation import train_transform, val_transform
 from models import MyCNN, resnet18
 from utils import device, show_dl
-from torchbearer import Trial
-from torchbearer.callbacks import CSVLogger, ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+from poutyne.framework import Model
+from poutyne.framework.callbacks import ReduceLROnPlateau, ModelCheckpoint, EarlyStopping
 from callbacks import CometCallback
 from logger import logging
 
