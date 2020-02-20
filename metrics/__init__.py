@@ -1,9 +1,22 @@
-import torch
-from torchbearer import metrics
+from poutyne.framework.metrics import EpochMetric
 
-# @metrics.default_for_key('acc')
-# @metrics.mean
-# @metrics.lambda_metric('acc', on_epoch=False)
-# def categorical_accuracy(y_pred, y_true):
-#    _, y_pred = torch.max(y_pred, 1)
-#    return (y_pred == y_true).float()
+# define a custom metric as a function
+def my_metric(y_true, y_pred):
+    pass
+
+# or as a class when we need to accumulate
+class MyEpochMetric(EpochMetric):
+    def forward(self, y_pred, y_true):
+        """
+        To define the behavior of the metric when called.
+        Args:
+            y_pred: The prediction of the model.
+            y_true: Target to evaluate the model.
+        """
+        pass
+
+    def get_metric(self):
+        """
+        Compute and return the metric.S
+        """
+        pass

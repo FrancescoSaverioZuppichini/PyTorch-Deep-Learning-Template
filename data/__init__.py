@@ -9,12 +9,9 @@ def get_dataloaders(
         root,
         train_transform=None,
         val_transform=None,
-        val_split=0.2,
-        test_split=0.5,
-        batch_size=64,
-        num_workers=4,
-        *args,
-        **kwargs):
+        split=(0.5, 0.5),
+        batch_size=32,
+        *args, **kwargs):
     """
     This function returns train, val and test dataloaders.
     """
@@ -34,11 +31,8 @@ def get_dataloaders(
     logging.info(
         f'Train samples={len(train_ds)}, Validation samples={len(val_ds)}, Test samples={len(test_ds)}')
 
-    train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
-                          pin_memory=True, num_workers=num_workers, *args,  **kwargs)
-    val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False,
-                        pin_memory=True, num_workers=num_workers, *args,  **kwargs)
-    test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False,
-                         pin_memory=True, num_workers=num_workers, *args,  **kwargs)
+    train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, *args, **kwargs)
+    val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, *args, **kwargs)
+    test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False, *args, **kwargs)
 
     return train_dl, val_dl, test_dl
