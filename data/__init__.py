@@ -1,35 +1,32 @@
 import numpy as np
+from .MyDataset import MyDataset
 from torch.utils.data import DataLoader, random_split
 from logger import logging
 from torchvision.datasets.folder import ImageFolder
-from torchbearer.cv_utils import DatasetValidationSplitter
-
 
 def get_dataloaders(
-        root,
+        train_dir,
+        var_dir,
         train_transform=None,
         val_transform=None,
         split=(0.5, 0.5),
         batch_size=32,
         *args, **kwargs):
     """
-    This function returns train, val and test dataloaders.
+    This function returns the train, val and test dataloaders.
     """
     # create the datasets
-    ds = ImageFolder(root=root, transform=val_transform)
-    splitter = DatasetValidationSplitter(len(ds), val_split)
-    train_ds = splitter.get_train_dataset(ds)
-    train_ds.dataset.transform = train_transform
-    val_ds = splitter.get_val_dataset(ds)
-    test_ds = val_ds
-    if test_split is not None:
-        # let's further split the val dataset in val and test
-        splitter = DatasetValidationSplitter(len(val_ds), test_split)
-        val_ds = splitter.get_train_dataset(val_ds.dataset)
-        test_ds = splitter.get_val_dataset(val_ds.dataset)
+    train_ds = ImageFolder(root=train_dir, transform=train_transform)
+    val_ds = ImageFolder(root=var_dir, transform=val_transform)
+    # now we want to split the val_ds in validation and test
+    lengths = np.array(split) * len(val_ds)
+    lengths = lengths.astype(int)
+    left = len(val_ds) - lengths.sum()
+    # we need to add the different due to float approx to int
+    lengths[-1] += left
 
-    logging.info(
-        f'Train samples={len(train_ds)}, Validation samples={len(val_ds)}, Test samples={len(test_ds)}')
+    val_ds, test_ds = random_split(val_ds, lengths.tolist())
+    logging.info(f'Train samples={len(train_ds)}, Validation samples={len(val_ds)}, Test samples={len(test_ds)}')
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, *args, **kwargs)
     val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, *args, **kwargs)
