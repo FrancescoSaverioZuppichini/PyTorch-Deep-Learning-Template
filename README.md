@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ```
 
 ### Motivation
-Let's face it, usually data scientists are not software engineers and they usually end up with spaghetti code, most of the time on a big unusable Jupiter-notebook. With this repo, you have proposed a clean example of how your code should be split and modularized to make scalability and sharability possible. In this example, we will try to classify Darth Vader and Luke Skywalker. We have 100 images per class gathered using google images. The dataset is [here](https://drive.google.com/open?id=1LyHJxUVjOgDIgGJL4MnDhA10xjejWuw7). You just have to exact it in this folder and run main.py. We are fine-tuning resnet18 and it should be able to reach > 90% accuracy in 5/10 epochs.
+Let's face it, usually data scientists are not software engineers and they usually end up with spaghetti code, most of the time on a big unusable Jupiter-notebook. With this repo, I have proposed a clean example of how your code should be split and modularized to make scalability and sharability possible. In this example, we will try to classify Darth Vader and Luke Skywalker. We have 100 images per class gathered using google images. The dataset is [here](https://drive.google.com/open?id=1LyHJxUVjOgDIgGJL4MnDhA10xjejWuw7). You just have to extract it in this folder and run main.py. We are fine-tuning resnet18 and it should be able to reach > 90% accuracy in 5/10 epochs.
 ## Structure
 The template is inside `./template`.
 ```
@@ -55,14 +55,14 @@ Every deep learning project has at least three mains steps:
 - modeling
 - training/evaluating
 ## Project
-One good idea is to store all the paths at an interesting location, e.g. the dataset folder, in a shared class that be accessed by anyone in the folder. You should never hardcode any paths and always define them once and import them. So, if you later change your structure you will only have to modify one file.
-If we have a look at `Project.py` we can see how we defined the `data_dir` and the `checkpoint_dir` once for all. We are using the 'new' [Path](https://docs.python.org/3/library/pathlib.html) APIs that support different OS out of the box, and also make it easier to join and concatenate paths.
+One good idea is to store all the paths at an interesting location, e.g. the dataset folder, in a shared class that can be accessed by anyone in the folder. You should never hardcode any paths and always define them once and import them. So, if you later change your structure you will only have to modify one file.
+If we have a look at `Project.py` we can see how we defined the `data_dir` and the `checkpoint_dir` once for all. We are using the 'new' [Path](https://docs.python.org/3/library/pathlib.html) APIs that support different OS out of the box, and also makes it easier to join and concatenate paths.
 ![alt](https://raw.githubusercontent.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/master/images/Project.png)
 For example, if we want to know the data location we can :
 ```python3
 from Project import Project
 project = Project() 
-print(projct.data_dir) # /foo/baa/…/dataset
+print(project.data_dir) # /foo/baa/…/dataset
 ```
 ## Data
 In the `data` package you can define your own Dataset, as always by subclassing `torch.data.utils.Dataset`, exposing transformations and utilities to work with your data.
@@ -84,8 +84,8 @@ Sometimes you may need to define your custom metrics. For example
 We included python [logging](https://docs.python.org/3/library/logging.html) module. You can import and use it by:
 
 ```python
-from logger import logger
-logger.info('print() is for noobs')
+from logger import logging
+logging.info('print() is for noobs')
 ```
 
 ## Models
@@ -109,7 +109,7 @@ We are using [comet](https://www.comet.ml/) to automatically track our models' r
 Running `main.py` produces the following output:
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/master/images/output.jpg?raw=true)
 ## Utils
-We also created different utilities function to plot booth dataset and dataloader. They are in `utils.py`. For example, calling `show_dl` on our train and val dataset produces the following outputs.
+We also created different utilities function to plot both dataset and dataloader. They are in `utils.py`. For example, calling `show_dl` on our train and val dataset produces the following outputs.
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/master/images/Figure_1.png?raw=true)
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/master/images/Figure_2.png?raw=true)
 As you can see data-augmentation is correctly applied on the train set
