@@ -1,3 +1,4 @@
+import json
 import time
 from comet_ml import Experiment
 import torch.optim as optim
@@ -7,25 +8,31 @@ from data import get_dataloaders
 from data.transformation import train_transform, val_transform
 from models import MyCNN, resnet18
 from utils import device, show_dl
-from poutyne.framework import Model
-from poutyne.framework.callbacks import ReduceLROnPlateau, ModelCheckpoint, EarlyStopping
-from callbacks import CometCallback
+from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
+from pytorch_lightning import Trainer, seed_everything
+from pytorch_lightning.loggers import CometLogger, MLFlowLogger
+from system import MySystem
 from logger import logging
 
 if __name__ == '__main__':
     project = Project()
+
+    with open('./secrets.json', 'r') as f:
+        secrets = json.load(f)
+
+    seed_everything(0)
     # our hyperparameters
     params = {
-        'lr': 0.001,
-        'batch_size': 64,
+        'lr': 1e-3,
+        'batch_size': 128,
         'epochs': 10,
-        'model': 'resnet18-finetune'
+        'model': 'resnet18-finetune',
+        'id': time.time()
     }
     logging.info(f'Using device={device} 🚀')
     # everything starts with the data
     train_dl, val_dl, test_dl = get_dataloaders(
-        project.data_dir / "train",
-        project.data_dir / "val",
+        project.data_dir / "tiny-imagenet-200",
         val_transform=val_transform,
         train_transform=train_transform,
         batch_size=params['batch_size'],
@@ -34,35 +41,38 @@ if __name__ == '__main__':
     )
     # is always good practice to visualise some of the train and val images to be sure data-aug
     # is applied properly
-    show_dl(train_dl)
-    show_dl(test_dl)
-    # define our comet experiment
-    experiment = Experiment(api_key="YOU_KEY",
-                            project_name="dl-pytorch-template", workspace="francescosaveriozuppichini")
-    experiment.log_parameters(params)
+    # show_dl(train_dl)
+    # show_dl(test_dl)
     # create our special resnet18
-    cnn = resnet18(2).to(device)
+    cnn = resnet18(200).to(device)
     # print the model summary to show useful information
     logging.info(summary(cnn, (3, 224, 244)))
-    # define custom optimizer and instantiace the trainer `Model`
-    optimizer = optim.Adam(cnn.parameters(), lr=params['lr'])
-    model = Model(cnn, optimizer, "cross_entropy",
-                  batch_metrics=["accuracy"]).to(device)
-    # usually you want to reduce the lr on plateau and store the best model
+    # define and create the model's chekpoints dir
+    model_checkpoint_dir = project.checkpoint_dir / str(params['id'])
+    model_checkpoint_dir.mkdir(exist_ok=True)
+    # our callbacks
     callbacks = [
-        ReduceLROnPlateau(monitor="val_acc", patience=5, verbose=True),
-        ModelCheckpoint(str(project.checkpoint_dir /
-                            f"{time.time()}-model.pt"), save_best_only="True", verbose=True),
-        EarlyStopping(monitor="val_acc", patience=10, mode='max'),
-        CometCallback(experiment)
+        ModelCheckpoint(
+            monitor='val_loss',
+            dirpath=model_checkpoint_dir,
+            filename='{epoch:02d}-{val_loss:.2f}'
+        ),
+        EarlyStopping(monitor='val_loss', patience=10, verbose=True)
     ]
-    model.fit_generator(
-        train_dl,
-        val_dl,
-        epochs=params['epochs'],
-        callbacks=callbacks,
+    # using commet
+    logger = CometLogger(
+        api_key=secrets['COMET_API_KEY'],
+        project_name="test",
+        workspace="francescosaveriozuppichini"
     )
-    # get the results on the test set
-    loss, test_acc = model.evaluate_generator(test_dl)
-    logging.info(f'test_acc=({test_acc})')
-    experiment.log_metric('test_acc', test_acc)
+    logger.log_hyperparams(params)
+    
+    system = MySystem(model=cnn, lr=params['lr'])
+
+    trainer = Trainer(gpus=1, min_epochs=params['epochs'],
+                      progress_bar_refresh_rate=20, logger=logger,
+                      callbacks=callbacks)
+
+    trainer.fit(system, train_dl, val_dl)
+
+    print(trainer.test(test_dataloaders=test_dl))

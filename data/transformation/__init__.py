@@ -1,6 +1,7 @@
 import numpy as np
 import torchvision.transforms as T
 from imgaug import augmenters as iaa
+from torchvision.transforms.transforms import CenterCrop, RandomCrop
 
 
 class ImgAugTransform:
@@ -23,7 +24,8 @@ class ImgAugTransform:
             iaa.Sometimes(0.8,
                           iaa.Affine(
                               scale={"x": (0.8, 1.2), "y": (0.8, 1.2)},
-                              translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)},
+                              translate_percent={
+                                  "x": (-0.2, 0.2), "y": (-0.2, 0.2)},
                               rotate=(-25, 25),
                               shear=(-8, 8)
                           )),
@@ -36,9 +38,11 @@ class ImgAugTransform:
         return img
 
 
-val_transform = T.Compose([T.Resize((224, 224)),
+val_transform = T.Compose([T.Resize((256, 256)),
+                           T.CenterCrop((224, 224)),
                            T.ToTensor()])
 
-train_transform = T.Compose([T.Resize((224, 224)),
+train_transform = T.Compose([T.Resize((256, 256)),
+                             T.RandomCrop((224, 224)),
                              ImgAugTransform(),
                              T.ToTensor()])

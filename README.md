@@ -6,7 +6,7 @@ In this article, we present you a deep learning template based on Pytorch. This 
 
 - modularity: we split each logic piece into a different python submodule
 - data-augmentation: we included [imgaug](https://imgaug.readthedocs.io/en/latest/)
-- ready to go: by using [poutyne](https://pypi.org/project/Poutyne/) a Keras-like framework you don't have to write any train loop.
+- ready to go: by using [pytorch-lightning.](https://pytorch-lightning.readthedocs.io/en/stable/index.html) one of the most used frameworks (even if is terrible) to train/evaluate your models
 - [torchsummary](https://github.com/sksq96/pytorch-summary) to show a summary of your models
 - reduce the learning rate on a plateau
 - auto-saving the best model
@@ -21,7 +21,14 @@ pip install -r requirements.txt
 ```
 
 ### Motivation
-Let's face it, usually data scientists are not software engineers and they usually end up with spaghetti code, most of the time on a big unusable Jupiter-notebook. With this repo, you have proposed a clean example of how your code should be split and modularized to make scalability and sharability possible. In this example, we will try to classify Darth Vader and Luke Skywalker. We have 100 images per class gathered using google images. The dataset is [here](https://drive.google.com/open?id=1LyHJxUVjOgDIgGJL4MnDhA10xjejWuw7). You just have to exact it in this folder and run main.py. We are fine-tuning resnet18 and it should be able to reach > 90% accuracy in 5/10 epochs.
+Let's face it, usually data scientists are not software engineers and they usually end up with spaghetti code, most of the time on a big unusable Jupiter-notebook. With this repo, you have proposed a clean example of how your code should be split and modularized to make scalability and sharability possible. In this example, we will use imagenet-200. You have to run the `get_tiny-imagenet.sh`
+
+```
+chmod 755 ./get_tiny-imagenet.sh
+./get_tiny-imagenet.sh
+mv ./tiny-imagenet-200 ./dataset
+```
+
 ## Structure
 The template is inside `./template`.
 ```
@@ -46,6 +53,7 @@ The template is inside `./template`.
 ├── requirements.txt
 ├── test // you should always perform some basic testing
 │ └── test_myDataset.py
+└── system.py // pytorch lightning model
 └── utils.py // utilities functions
 ```
 **We strongly encourage to play around with the template**
@@ -93,7 +101,7 @@ All your models go inside `models`, in our case, we have a very basic cnn and we
 
 ![alt](https://github.com/FrancescoSaverioZuppichini/PyTorch-Deep-Learning-Skeletron/blob/master/images/resnet.png?raw=true)
 ## Train/Evaluation
-In our case we kept things simple, all the training and evaluation logic is inside `.main.py` where we used [poutyne](https://pypi.org/project/Poutyne/) as the main library. We already defined a useful list of callbacks:
+In our case we kept things simple, all the training and evaluation logic is inside `.main.py` where we used [pytorch-lightning.](https://pytorch-lightning.readthedocs.io/en/stable/index.html) as the main library. We already defined a useful list of callbacks:
 - learning rate scheduler
 - auto-save of the best model
 - early stopping

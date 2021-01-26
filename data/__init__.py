@@ -1,31 +1,27 @@
 import numpy as np
+from numpy.lib.shape_base import dstack
+from torchvision.datasets.folder import ImageFolder
 from .MyDataset import MyDataset
 from torch.utils.data import DataLoader, random_split
 from logger import logging
-from torchvision.datasets.folder import ImageFolder
+from torchvision.datasets import ImageNet
 
 def get_dataloaders(
-        train_dir,
-        var_dir,
+        root,
         train_transform=None,
         val_transform=None,
-        split=(0.5, 0.5),
+        split=(0.8, 0.2),
         batch_size=32,
         *args, **kwargs):
     """
     This function returns the train, val and test dataloaders.
     """
     # create the datasets
-    train_ds = ImageFolder(root=train_dir, transform=train_transform)
-    val_ds = ImageFolder(root=var_dir, transform=val_transform)
-    # now we want to split the val_ds in validation and test
-    lengths = np.array(split) * len(val_ds)
-    lengths = lengths.astype(int)
-    left = len(val_ds) - lengths.sum()
-    # we need to add the different due to float approx to int
-    lengths[-1] += left
-
-    val_ds, test_ds = random_split(val_ds, lengths.tolist())
+    ds = ImageFolder(root=root / 'train', transform=train_transform)
+    test_ds = ImageFolder(root=root / 'val', transform=val_transform)
+    # now we want to split the train_ds in train and val
+    val_len = int(len(ds) * split[1])
+    train_ds, val_ds = random_split(ds, lengths=[len(ds) - val_len, val_len])
     logging.info(f'Train samples={len(train_ds)}, Validation samples={len(val_ds)}, Test samples={len(test_ds)}')
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, *args, **kwargs)

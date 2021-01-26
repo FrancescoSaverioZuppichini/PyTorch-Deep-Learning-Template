@@ -1,7 +1,11 @@
 # common IDEs folder
 .idea/
 .vscode/
+# our stuff
 dataset/
+chekpoint/
+./segrets.json
+lightning_logs/
 *.pt
 # Byte-compiled / optimized / DLL files
 __pycache__/
