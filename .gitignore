@@ -3,7 +3,7 @@
 .vscode/
 # our stuff
 dataset/
-chekpoint/
+checkpoint/
 ./segrets.json
 lightning_logs/
 *.pt

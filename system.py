@@ -21,7 +21,7 @@ class MySystem(pl.LightningModule):
         self.lr = lr
         self.metrics = nn.ModuleDict({
             'accuracy': Accuracy(),
-            'f1': F1()
+            'f1': F1(num_classes=200)
         })
         # this apis are so bad
         
